@@ -1,3 +1,8 @@
+code is in ~/git/cbioportal_data_ingestion
+~/projects/cbioportal_ingestion # Actual study runs + data
+
+
+
 # Step 1) Define global directories (once, on your machine)
 # Root of the whole ingestion repo
 DIR_ROOT=~/git/cbioportal_data_ingestion
