@@ -2,83 +2,81 @@
 set -euo pipefail
 
 ############################################
-# STUDY‑LEVEL METADATA
+# GLOBAL PATHS (DO NOT EDIT)
 ############################################
 
-STUDY_ID="lung_translational"
-CANCER_TYPE="lung"
-ONCOTREE_DEFAULT="LUAD"
+DIR_ROOT=~/git/cbioportal_data_ingestion
+DIR_SCRIPTS=${DIR_ROOT}/scripts
+DIR_PROJECTS=${DIR_ROOT}/projects
 
 ############################################
-# RAW (UNFORMATTED) INPUT FILES
+# PROJECT CONFIG (EDIT PER PROJECT)
 ############################################
 
-# 1) Fulgent / sequencing QC table (RNAseq + WES)
+PROJECT_NAME=""
+DIR_PROJECT=${DIR_PROJECTS}/${PROJECT_NAME}
+
+UNFORMATTED_DIR=${DIR_PROJECT}/unformatted_files
+OUTPUT_DIR=${DIR_PROJECT}/cbioportal_ready
+
+############################################
+# RAW INPUT FILES (EDIT PER PROJECT)
+############################################
+
+# Sample / sequencing QC (Fulgent)
 UNFORMATTED_SAMPLE_INFO_PATH=""
 
-# 2) Patient metadata table (free‑form columns)
+# Patient metadata (free‑form)
 UNFORMATTED_PATIENT_INFO_PATH=""
 
-# 3) IHC table (optional)
+# IHC table (optional)
 UNFORMATTED_IHC_INFO_PATH=""
 
-# 4) Gene expression (TPM)
+# Expression (TPM)
 UNFORMATTED_EXPRESSION_TPM_PATH=""
 
-# 5) Mutation inputs (directory containing many batch MAFs)
+# Mutation MAF batches (directory)
 UNFORMATTED_MAF_ROOT_PATH=""
 
 ############################################
-# ADaM (OPTIONAL – CAN BE EMPTY FOR NOW)
+# COLUMN MAPPING (RAW → CANONICAL)
 ############################################
 
-ADAM_PATIENT_LEVEL_PATH=""
-ADAM_SURVIVAL_LEVEL_PATH=""
-
-############################################
-# COLUMN MAPPINGS (RAW → CANONICAL)
-############################################
-# These MUST be edited per dataset
-
-# ---- Sample mapping (Fulgent / QC table) ----
+# ---- Sample info table ----
 COL_SAMPLE_SOURCE_SAMPLE_ID="accessionid"
 COL_SAMPLE_PATIENT_ID="patient_id"
 COL_SAMPLE_SAMPLE_ID="externalspecimenid"
 COL_SAMPLE_ASSAY_TYPE="sampletype"
 COL_SAMPLE_BATCH_ID="sample_plateid"
 
-# ---- Patient metadata ----
+# ---- Patient table ----
 COL_PATIENT_PATIENT_ID="patient_id"
 
-# ---- Expression matrix ----
-EXPR_SAMPLE_ID_COLUMN="sample_id"
-EXPR_GENE_ID_TYPE="ENSG"     # ENSG | SYMBOL
+############################################
+# EXPRESSION SETTINGS
+############################################
+
+EXPR_GENE_ID_TYPE="ENSG"      # ENSG or SYMBOL
 EXPR_VALUE_TYPE="TPM"
 
 ############################################
 # REFERENCE FILES
 ############################################
 
-ENSG_TO_HGNC_MAP="reference/ensg_to_hgnc.tsv"
-ONCOTREE_MAP="reference/oncotree_map.tsv"
+ENSG_TO_HGNC_MAP=${DIR_SCRIPTS}/reference/ensg_to_hgnc.tsv
+ONCOTREE_MAP=${DIR_SCRIPTS}/reference/oncotree_map.tsv
 
 ############################################
-# OUTPUT
+# PIPELINE STEPS (ADDED GRADUALLY)
 ############################################
 
-OUT_STUDY_DIR="output/${STUDY_ID}"
+echo "Starting ingestion for ${PROJECT_NAME}"
+echo "Project directory: ${DIR_PROJECT}"
 
-############################################
-# PIPELINE STEPS (NO IMPLEMENTATION YET)
-############################################
-
-echo "Preparing study: ${STUDY_ID}"
-echo "Output directory: ${OUT_STUDY_DIR}"
-
-# Placeholder – steps will be added incrementally
-# python steps/01_ids.py
-# python steps/02_clinical.py
-# python steps/03_expression.py
-# python steps/04_mutations.py
-# python steps/05_caselists.py
-# python steps/06_meta.py
+# Steps will be enabled one‑by‑one
+# python ${DIR_SCRIPTS}/steps/01_harmonize_ids.py
+# python ${DIR_SCRIPTS}/steps/02_build_clinical.py
+# python ${DIR_SCRIPTS}/steps/03_expression_zscores.py
+# python ${DIR_SCRIPTS}/steps/04_merge_maf.py
+# python ${DIR_SCRIPTS}/steps/05_case_lists.py
+# python ${DIR_SCRIPTS}/steps/06_meta_files.py
