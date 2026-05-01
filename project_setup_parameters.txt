@@ -1,0 +1,43 @@
+# ---------------------------
+# REQUIRED (edit per project)
+# ---------------------------
+
+PROJECT_NAME=""
+TYPE_OF_CANCER="luad"              # cbio type_of_cancer (e.g. luad, lusc, mixed)
+REFERENCE_GENOME="hg38"            # hg19 or hg38
+STUDY_NAME=""
+STUDY_DESCRIPTION=""
+
+# ---------------------------
+# DATA TYPE FLAGS
+# ---------------------------
+
+HAS_RNASEQ=true
+HAS_WES=true
+HAS_IHC=false
+
+# ---------------------------
+# INPUT FILES (relative to unformatted_files/)
+# ---------------------------
+
+# clinical
+FULGENT_QC_CSV="clinical/fulgent_qc_samples.csv"
+PATIENT_METADATA="clinical/patient_metadata.tsv"
+
+# rnaseq
+RNASEQ_TPM_TSV="rnaseq/salmon.merged.gene_tpm.tsv"
+
+# wes
+WES_SAMPLESHEET="wes/samplesheet_wes.csv"
+WES_MAF_DIR="wes/wes_maf_batches"
+
+# ihc
+IHC_FILE="ihc/ihc.txt"   # e.g. ihc/ihc_trop2_pdl1_pvr_tigit.txt
+
+# ---------------------------
+# VALIDATION
+# ---------------------------
+
+RUN_VALIDATION=true
+VALIDATOR_DIR="${HOME}/git/datahub-study-curation-tools/validation/validator"
+VALIDATOR_FLAGS="-n -v -r"
